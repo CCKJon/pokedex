@@ -1,18 +1,21 @@
-import { writable } from "svelte/store"; 2.1K(gzipped: 1K)
-export const pokemon = writable()
+import { writable } from 'svelte/store';
 
-const fetchPokemon = async () => {
-	const url = 'https://pokeapi.co/api/v2';
-	const res = await fetchPokemon(url);
+export const pokemon = writable([]);
+
+const fetchPokemon = async (num) => {
+	const url = `https://pokeapi.co/api/v2/pokemon?limit=150`;
+	const res = await fetch(url);
 	const data = await res.json();
 	const loadedPokemon = data.results.map((data, index) => {
 		return {
 			name: data.name,
 			id: index + 1,
-			image:
-				'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png'
+			image: `https:raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${
+				index + 1
+			}.gif`
 		};
-    });
-    pokemon.set(loadedPokemon)
+	});
+	pokemon.set(loadedPokemon);
 };
+
 fetchPokemon();
